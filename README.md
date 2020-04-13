@@ -2,7 +2,8 @@
 <!-- Module Name and description are required -->
 # Google Kubenetes Engine
 
-<!-- TODO: Add description -->
+Provides a private regional GKE cluster in a dedicated subnet, with a
+configurable node pool.
 
 <!-- Compatibility section is optional -->
 ## Compatibility
@@ -116,11 +117,11 @@ module "your_custom_name_for_your_instance_of_this_module" {
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Notes section is optional -->
-## Notes
+<!-- ## Notes
 
 Anything quirky about the module folks may want to know about. Relevant
 links or additional useful information.  Format is up to you.
-
+ -->
 <!-- License is required -->
 ## License
 
