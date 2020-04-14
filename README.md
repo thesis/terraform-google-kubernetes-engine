@@ -21,56 +21,58 @@ There are multiple examples included in the [examples](./examples/) folder but
 simple usage is as follows:
  -->
 
-Simple module usage is as follows.
+Module usage is as follows:
 
 ```hcl
 locals {
-  gke_subnet_name = "${var.environment}-${module.vpc.vpc_subnet_prefix}-gke-${var.region_data["region"]}"
+  gke_subnet_name = "name-of-your-subnet"
 }
 
 module "your_custom_name_for_your_instance_of_this_module" {
   source           = "git@github.com:thesis/this-module-name.git"
   name             = "name-of-your-project"
-  project          = "${module.project.project_id}"
-  region           = "${var.region_data["region"]}"
-  vpc_network_name = "${module.vpc.vpc_network_name}"
+  project          = "gcp-id-of-your-project"
+  region           = "region-name"
+  vpc_network_name = "name-of-your-vpc-network"
 
   gke_subnet {
     name                             = "${local.gke_subnet_name}"
-    primary_ip_cidr_range            = "${var.gke_subnet["primary_ip_cidr_range"]}"
-    services_secondary_range_name    = "${var.gke_subnet["services_secondary_range_name"]}"
-    services_secondary_ip_cidr_range = "${var.gke_subnet["services_secondary_ip_cidr_range"]}"
-    cluster_secondary_range_name     = "${var.gke_subnet["cluster_secondary_range_name"]}"
-    cluster_secondary_ip_cidr_range  = "${var.gke_subnet["cluster_secondary_ip_cidr_range"]}"
+    primary_ip_cidr_range            = "CIDR-range-for-primary-subnet"
+    services_secondary_range_name    = "secondary-range-name-for-services"
+    services_secondary_ip_cidr_range = "secondary-CIDR-range-for-services"
+    cluster_secondary_range_name     = "secondary-range-name-for-cluster-pods"
+    cluster_secondary_ip_cidr_range  = "secondary-CIDR-range-for-cluster-pods"
   }
 
   gke_cluster {
-    name                                = "${var.gke_cluster["name"]}"
-    private_cluster                     = "${var.gke_cluster["private_cluster"]}"
-    master_ipv4_cidr_block              = "${var.gke_cluster["master_ipv4_cidr_block"]}"
-    daily_maintenance_window_start_time = "${var.gke_cluster["daily_maintenance_window_start_time"]}"
-    network_policy_enabled              = "${var.gke_cluster["network_policy_enabled"]}"
-    network_policy_provider             = "${var.gke_cluster["network_policy_provider"]}"
-    logging_service                     = "${var.gke_cluster["logging_service"]}"
-    monitoring_service                  = "${var.gke_cluster["monitoring_service"]}"
+    name                                = "name-of-your-gke-cluster"
+    private_cluster                     = "is-cluster-private"
+    master_ipv4_cidr_block              = "ip-range-for-master"
+    daily_maintenance_window_start_time = "HH:MM"
+    network_policy_enabled              = "can-cluster-configure-network-policies"
+    network_policy_provider             = "name-of-provider" # or "PROVIDER_UNSPECIFIED"
+    logging_service                     = "logging.googleapis.com/kubernetes"
+    monitoring_service                  = "monitoring.googleapis.com/kubernetes"
   }
 
   gke_node_pool {
-    name         = "${var.gke_node_pool["name"]}"
-    node_count   = "${var.gke_node_pool["node_count"]}"
-    machine_type = "${var.gke_node_pool["machine_type"]}"
-    disk_type    = "${var.gke_node_pool["disk_type"]}"
-    disk_size_gb = "${var.gke_node_pool["disk_size_gb"]}"
-    oauth_scopes = "${var.gke_node_pool["oauth_scopes"]}"
-    auto_repair  = "${var.gke_node_pool["auto_repair"]}"
-    auto_upgrade = "${var.gke_node_pool["auto_upgrade"]}"
-    tags         = "${module.nat_gateway_zone_a.routing_tag_regional}"
+    name         = "name-of-your-gke-node-pool"
+    node_count   = "number-of-nodes-per-zone"
+    machine_type = "node-pool-machine-type"
+    disk_type    = "node-disk-type"
+    disk_size_gb = "size-of-node-disk"
+    oauth_scopes = ["which-google-api-scopes", "available-on-all-node-VMs"]
+    auto_repair  = "should-Google-managed-health-checks-assess state and do repair"
+    auto_upgrade = "should-keep-kube-version-up-to-date"
+    tags         = ["tags-to-apply-to-nodes", "impacts-firewalls"]
   }
 
   labels = "${local.labels}"
 }
 
 ```
+
+For an example of labels, see the [bootstrap project module](https://github.com/thesis/terraform-google-bootstrap-project#usage).
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -117,11 +119,20 @@ module "your_custom_name_for_your_instance_of_this_module" {
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Notes section is optional -->
-<!-- ## Notes
+## Notes
 
-Anything quirky about the module folks may want to know about. Relevant
-links or additional useful information.  Format is up to you.
- -->
+
+Be aware: the naming conventions we use at Thesis lean towards verbosity, in the
+interest of mking any resource's origin Very explicit. However, this can
+collide with GCP resource character limits.
+
+In this module's case, some interpolated names may exceed the character limit
+when using the GCP environment name as a prefix, if the environment name
+exceeds 11 characters.
+
+For instance: the Thesis standard  vpc_network_name is `<env-name>-vpc-network`,
+but in some cases had to be abbreviated to `<en>-vpc-network`.
+
 <!-- License is required -->
 ## License
 
