@@ -24,10 +24,6 @@ simple usage is as follows:
 Module usage is as follows:
 
 ```hcl
-locals {
-  gke_subnet_name = "name-of-your-subnet"
-}
-
 module "your_custom_name_for_your_instance_of_this_module" {
   source           = "git@github.com:thesis/this-module-name.git"
   name             = "name-of-your-project"
@@ -36,7 +32,7 @@ module "your_custom_name_for_your_instance_of_this_module" {
   vpc_network_name = "name-of-your-vpc-network"
 
   gke_subnet {
-    name                             = "${local.gke_subnet_name}"
+    name                             = "name-of-your-subnet"
     primary_ip_cidr_range            = "CIDR-range-for-primary-subnet"
     services_secondary_range_name    = "secondary-range-name-for-services"
     services_secondary_ip_cidr_range = "secondary-CIDR-range-for-services"
@@ -119,19 +115,7 @@ For an example of labels, see the [bootstrap project module](https://github.com/
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Notes section is optional -->
-## Notes
-
-
-Be aware: the naming conventions we use at Thesis lean towards verbosity, in the
-interest of mking any resource's origin Very explicit. However, this can
-collide with GCP resource character limits.
-
-In this module's case, some interpolated names may exceed the character limit
-when using the GCP environment name as a prefix, if the environment name
-exceeds 11 characters.
-
-For instance: the Thesis standard  vpc_network_name is `<env-name>-vpc-network`,
-but in some cases had to be abbreviated to `<en>-vpc-network`.
+<!-- ## Notes -->
 
 <!-- License is required -->
 ## License
