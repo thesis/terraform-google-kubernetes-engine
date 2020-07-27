@@ -8,8 +8,10 @@ configurable node pool.
 <!-- Compatibility section is optional -->
 ## Compatibility
 
-This module is compatible with Terraform `<= 0.12.0`
-And the Google Cloud Provider `<= 1.19.0`
+| This Module | Terraform | Google Provider |
+|-------------|-----------|-----------------|
+| v0.1.0      | <= 0.12.0 | <= 1.19.0       |
+| v0.2.0      | <= 0.12.0 | <= 2.20.0       |
 
 <!-- Usage section is required -->
 ## Usage
@@ -42,7 +44,6 @@ module "your_custom_name_for_your_instance_of_this_module" {
 
   gke_cluster {
     name                                = "name-of-your-gke-cluster"
-    private_cluster                     = "is-cluster-private"
     master_ipv4_cidr_block              = "ip-range-for-master"
     daily_maintenance_window_start_time = "HH:MM"
     network_policy_enabled              = "can-cluster-configure-network-policies"
