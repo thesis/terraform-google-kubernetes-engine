@@ -14,13 +14,24 @@ resource "google_container_cluster" "a_gke_cluster" {
   project = "${var.project}"
   name    = "${lookup(var.gke_cluster, "name", "")}"
   region  = "${var.region}"
-
-  private_cluster        = "${lookup(var.gke_cluster, "private_cluster", "")}"
   network                = "${data.google_compute_network.gke_vpc.self_link}"
   subnetwork             = "${google_compute_subnetwork.a_gke_subnet.self_link}"
-  master_ipv4_cidr_block = "${lookup(var.gke_cluster, "master_ipv4_cidr_block", "")}"
+  
+  private_cluster_config {
+    # Enables a private cluster, creating a private endpoint and nodes with private-only IP's.
+    enable_private_nodes = "${lookup(var.gke_cluster, "enable_private_nodes", true)}"
+    /* Despite what this looks like, setting enable_private_endpoint to false does not disable the
+     * private endpoint. When false the public endpoint is enabled.  If you want to disable the
+     * public endpoint for a cluster, then set this value to true.
+    */ 
+    enable_private_endpoint = "${lookup(var.gke_cluster, "enable_private_endpoint", false)}"
+    master_ipv4_cidr_block = "${lookup(var.gke_cluster, "master_ipv4_cidr_block", "")}"
+  }
 
-  # Empty to disable.
+  /* Explicitly disable master authorized endpoints by default.  If you need access over a public
+   * interface it should be temporary.  This is typically warranted only during environment
+   * setup when a VPN hasn't been configured yet.
+  */ 
   master_auth {
     username = ""
     password = ""

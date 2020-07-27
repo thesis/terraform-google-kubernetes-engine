@@ -35,12 +35,13 @@ variable "labels" {
  * List of gke_cluster configs:
  * -----------------
  * name
- * private_cluster
- * master_ipv4_cidr_block
  * subnet
  * daily_maintenance_window_start_time
  * network_policy_enabled
  * logging_service
+ * enable_private_nodes
+ * enable_private_endpoint
+ * master_ipv4_cidr_block
 */
 
 variable "gke_cluster" {
@@ -92,13 +93,6 @@ variable "gke_node_pool" {
  * option in one of the aforementioned config maps. In module
  * configuration we use map key/value pairs.
 */
-
-## gke_cluster{}
-variable "master_ipv4_cidr_block" {
-  description = "IP range for master.  Must not overlap GKE subnet primary/secondary ranges.  Must be a /28 netmask."
-  type        = "string"
-  default     = ""
-}
 
 variable "subnet" {
   description = "The subnet to build GKE in. Subnet generated in GKE module used."
