@@ -86,9 +86,9 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| gke\_cluster | n/a | `map` | `{}` | no |
-| gke\_node\_pool | n/a | `map` | `{}` | no |
-| gke\_subnet | n/a | `map` | `{}` | no |
+| gke\_cluster | Configurations related to the cluster master, and general cluster config. | `map` | `{}` | no |
+| gke\_node\_pool | Configurations related to the node pool that will be associated with your cluster. | `map` | `{}` | no |
+| gke\_subnet | Configurations related to setting up the subnet your cluster nodes will go in. | `map` | `{}` | no |
 | labels | A list of key/value pairs to describe your resource.  Labels are akin to tags. | `map` | `{}` | no |
 | project | The project id of the project you want to create the bucket in. | `string` | `""` | no |
 | region | The region where resources are generated. | `string` | `""` | no |
