@@ -96,8 +96,6 @@ resource "google_container_node_pool" "a_gke_node_pool" {
     disk_type    = "${lookup(var.gke_node_pool, "disk_type", "")}"
     disk_size_gb = "${lookup(var.gke_node_pool, "disk_size_gb", "")}"
     oauth_scopes = ["${split(",", lookup(var.gke_node_pool, "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"]
-
-    tags   = ["${split(",", lookup(var.gke_node_pool, "tags", ""))}"]
     labels = "${var.labels}"
 
     metadata {
