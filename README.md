@@ -72,35 +72,27 @@ module "your_custom_name_for_your_instance_of_this_module" {
 For an example of labels, see the [bootstrap project module](https://github.com/thesis/terraform-google-bootstrap-project#usage).
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+No requirements.
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| google | n/a |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| auto\_repair | Uses Google managed health checks to assess state and do repair. Node is drained/termed/recreated. | string | `""` | no |
-| auto\_upgrade | Keeps nodes up to date with latest stable Kubernetes version.  Uses maintenance window. | string | `""` | no |
-| cluster\_secondary\_ip\_cidr\_range | Secondary CIDR range for cluster pods. Required for private GKE. | string | `""` | no |
-| cluster\_secondary\_range\_name | Secondary IP range name for GKE cluster pods. Required for private GKE. | string | `""` | no |
-| daily\_maintenance\_window\_start\_time | Time window where daily maintenance operations can start. | string | `""` | no |
-| disk\_size\_gb | Size for node disk. | string | `""` | no |
-| disk\_type | Disk type mounted to nodes. pd-hdd, pd-ssd | string | `""` | no |
-| gke\_cluster |  | map | `<map>` | no |
-| gke\_node\_pool |  | map | `<map>` | no |
-| gke\_subnet |  | map | `<map>` | no |
-| image\_type | Base image for nodes. | string | `""` | no |
-| labels | A list of key/value pairs to describe your resource.  Labels are akin to tags. | map | `<map>` | no |
-| machine\_type | Machine type for nodes. | string | `""` | no |
-| master\_ipv4\_cidr\_block | IP range for master.  Must not overlap GKE subnet primary/secondary ranges.  Must be a /28 netmask. | string | `""` | no |
-| network\_policy\_enabled | Whether or not the cluster can configure network policies. | string | `""` | no |
-| node\_count | The number of nodes for the pool.  Nodes per zone. | string | `""` | no |
-| oauth\_scopes | Google APIs the GKE cluster has access to. | list | `<list>` | no |
-| primary\_ip\_cidr\_range | The subnet's primary range. | string | `""` | no |
-| project | The project id of the project you want to create the bucket in. | string | `""` | no |
-| region | The region where resources are generated. | string | `""` | no |
-| services\_secondary\_ip\_cidr\_range | Secondary CIDR range for services.  Required for private GKE. | string | `""` | no |
-| services\_secondary\_range\_name | Secondary IP range name for GKE services. Required for private GKE. | string | `""` | no |
-| subnet | The subnet to build GKE in. Subnet generated in GKE module used. | string | `""` | no |
-| tags | Network tags to apply to VMs.  This impacts routing and firewall rules. | list | `<list>` | no |
-| vpc\_network\_name | Name of the vpc network to associate GKE cluster with. | string | `""` | no |
+|------|-------------|------|---------|:--------:|
+| gke\_cluster | n/a | `map` | `{}` | no |
+| gke\_node\_pool | n/a | `map` | `{}` | no |
+| gke\_subnet | n/a | `map` | `{}` | no |
+| labels | A list of key/value pairs to describe your resource.  Labels are akin to tags. | `map` | `{}` | no |
+| project | The project id of the project you want to create the bucket in. | `string` | `""` | no |
+| region | The region where resources are generated. | `string` | `""` | no |
+| vpc\_network\_name | Name of the vpc network to associate GKE cluster with. | `string` | `""` | no |
 
 ## Outputs
 
