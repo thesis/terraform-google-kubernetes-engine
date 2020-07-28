@@ -42,7 +42,7 @@ variable "labels" {
 */
 
 variable "gke_cluster" {
-  description = ""
+  description = "Configurations related to the cluster master, and general cluster config."
   type        = "map"
   default     = {}
 }
@@ -60,7 +60,7 @@ variable "gke_cluster" {
 */
 
 variable "gke_subnet" {
-  description = ""
+  description = "Configurations related to setting up the subnet your cluster nodes will go in."
   type        = ""
   default     = {}
 }
@@ -79,7 +79,7 @@ variable "gke_subnet" {
 */
 
 variable "gke_node_pool" {
-  description = ""
+  description = "Configurations related to the node pool that will be associated with your cluster."
   type        = "map"
 
   default = {}
