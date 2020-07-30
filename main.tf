@@ -11,16 +11,29 @@ data "google_compute_network" "gke_vpc" {
 }
 
 resource "google_container_cluster" "a_gke_cluster" {
-  project = "${var.project}"
-  name    = "${lookup(var.gke_cluster, "name", "")}"
-  region  = "${var.region}"
+  project    = "${var.project}"
+  name       = "${lookup(var.gke_cluster, "name", "")}"
+  region     = "${var.region}"
+  network    = "${data.google_compute_network.gke_vpc.self_link}"
+  subnetwork = "${google_compute_subnetwork.a_gke_subnet.self_link}"
 
-  private_cluster        = "${lookup(var.gke_cluster, "private_cluster", "")}"
-  network                = "${data.google_compute_network.gke_vpc.self_link}"
-  subnetwork             = "${google_compute_subnetwork.a_gke_subnet.self_link}"
-  master_ipv4_cidr_block = "${lookup(var.gke_cluster, "master_ipv4_cidr_block", "")}"
+  private_cluster_config {
+    # Enables a private cluster, creating a private endpoint and nodes with private-only IP's.
+    enable_private_nodes = "${lookup(var.gke_cluster, "enable_private_nodes", true)}"
 
-  # Empty to disable.
+    /* Despite what this looks like, setting enable_private_endpoint to false does not disable the
+             * private endpoint. When false the public endpoint is enabled.  If you want to disable the
+             * public endpoint for a cluster, then set this value to true.
+            */
+    enable_private_endpoint = "${lookup(var.gke_cluster, "enable_private_endpoint", false)}"
+
+    master_ipv4_cidr_block = "${lookup(var.gke_cluster, "master_ipv4_cidr_block", "")}"
+  }
+
+  /* Explicitly disable master authorized endpoints by default.  If you need access over a public
+       * interface it should be temporary.  This is typically warranted only during environment
+       * setup when a VPN hasn't been configured yet.
+      */
   master_auth {
     username = ""
     password = ""
@@ -83,9 +96,7 @@ resource "google_container_node_pool" "a_gke_node_pool" {
     disk_type    = "${lookup(var.gke_node_pool, "disk_type", "")}"
     disk_size_gb = "${lookup(var.gke_node_pool, "disk_size_gb", "")}"
     oauth_scopes = ["${split(",", lookup(var.gke_node_pool, "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"]
-
-    tags   = ["${split(",", lookup(var.gke_node_pool, "tags", ""))}"]
-    labels = "${var.labels}"
+    labels       = "${var.labels}"
 
     metadata {
       disable-legacy-endpoints = "true"
